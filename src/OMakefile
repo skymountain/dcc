@@ -1,0 +1,34 @@
+# .PHONY: all clean
+
+USE_OCAMLFIND = true
+
+OCAMLPACKS[] =
+	batteries
+
+if $(not $(OCAMLFIND_EXISTS))
+   eprintln(This project requires ocamlfind, but it was not found.)
+   eprintln(You need to install ocamlfind and run "omake --configure".)
+   exit 1
+
+NATIVE_ENABLED = $(OCAMLOPT_EXISTS)
+BYTE_ENABLED = $(not $(OCAMLOPT_EXISTS))
+
+FLAGS           = -w A -warn-error A
+OCAMLFLAGS      += $(FLAGS)
+OCAMLCFLAGS     += $(FLAGS)
+OCAMLOPTFLAGS   += $(FLAGS)
+OCAMLYACCFLAGS  += -v
+
+OCamlGeneratedFiles(parser.ml lexer.ml)
+
+FILES[] =
+	main
+	parser
+	lexer
+	env
+	syntax
+	eval
+
+PROGRAM = dcc
+
+.DEFAULT: $(OCamlProgram $(PROGRAM), $(FILES))
