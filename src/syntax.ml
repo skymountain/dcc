@@ -46,3 +46,5 @@ and letdecl =
 type program =
   | PExpr of expr
   | PLet of letdecl
+
+let anon_id = ""
